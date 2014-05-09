@@ -11,7 +11,7 @@ Blog about setting up my [odroid u2][] as simple home server.
 Road Map
 --------
 
-* [base system](/posts/bootstrapping-base-system.html)
+* [base system](posts/bootstrapping-base-system.html)
 * users & pam configuration
 * network configuration
 * samba and nfs shares
