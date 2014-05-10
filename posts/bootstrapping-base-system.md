@@ -142,7 +142,7 @@ export CROSS_COMPILE=arm-linux-gnueabi-
 make odroidu_archlinux_defconfig
 make -j 32
 sudo cp arch/arm/boot/zImage ../boot/
-sudo make ARCH=arm INSTALL_MOD_PATH=../rootfs modules_install
+sudo make ARCH=arm INSTALL_MOD_PATH=$GUIDE/rootfs modules_install
 ```
 
 Note that if you downloaded hardkernel's linux, you need to either use my defconfig or change the defconfig to support systemd, as described in [gentoo wiki](http://wiki.gentoo.org/wiki/Systemd#Kernel).
@@ -150,7 +150,7 @@ Note that if you downloaded hardkernel's linux, you need to either use my defcon
 * Ignoring kernel updates
 
 ```bash
-echo "IgnorePkg   = linux" | sudo tee -a rootfs/etc/pacman.conf
+sudo sed -i '/^#IgnorePkg/a IgnorePkg   = linux' $GUIDE/rootfs/etc/pacman.conf
 ```
 This way (hopefully) our kernel won't break
 
