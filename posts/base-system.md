@@ -28,10 +28,10 @@ BEWARE: specifying the wrong letter may do evil things to your storage devices.
 Install required packages
 -------------------------
 ```bash
-apt-get install qemu binfmt-support qemu-user-static # chrooting packages
-apt-get install u-boot-tools # compiling the boot script
-apt-get install gcc-arm-linux-gnueabi # arm toolchain
-apt-get install f2fs-tools # making the falsh-friendly file-system
+sudo apt-get install qemu binfmt-support qemu-user-static # chrooting packages
+sudo apt-get install u-boot-tools # compiling the boot script
+sudo apt-get install gcc-arm-linux-gnueabi # arm toolchain
+sudo apt-get install f2fs-tools # making the falsh-friendly file-system
 ```
 If ext4 is preferred over the f2fs, install the ext4 package instead.
 
@@ -101,8 +101,8 @@ mkdir -p rootfs
 mkdir -p boot
 sudo mkfs.vfat -n boot "${SDCARD}1"
 sudo mkfs.f2fs -l rootfs "${SDCARD}2"
-mount "${SDCARD}1" boot
-mount "${SDCARD}2" rootfs
+sudo mount "${SDCARD}1" boot
+sudo mount "${SDCARD}2" rootfs
 ```
 
 if you want an ext4 and not f2fs, don't forget to tunefs off the journal, and don't add the rootfs type in the boot cmdline.
@@ -125,7 +125,7 @@ Build the Base-System
 ---------------------
 ```bash
 cd $GUIDE
-sudo arch-bootstrap.sh -d arch-pkg -a arm -q rootfs
+sudo ./arch-bootstrap.sh -d arch-pkg -a arm -q rootfs
 ```
 
 Should this script fail due to network errors (if succeeds, the last line is "--done"), re-execute it. It may be usefull to use the -d switch which saves the downloaded packages.
@@ -158,7 +158,7 @@ Unmount and Cleanup
 -------------------
 ```bash
 cd $GUIDE
-umount roofs boot
+sudo umount roofts boot
 sync
 ```
 
