@@ -13,7 +13,7 @@ Road Map
 
 * [base system](posts/base-system.html)
 * [users configuration](posts/users.html)
-* network configuration
+* [network configuration](posts/network.html)
 * samba and nfs shares
 * rsync server
 * google drive synchronization
