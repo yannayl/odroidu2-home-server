@@ -128,7 +128,7 @@ curl -o google-authenticator-libpam-git.tar.gz \
 tar xf ./google-authenticator-libpam-git.tar.gz
 cd google-authenticator-libpam-git
 makepkg -s # build package
-sudo pacman -U google-authenticator-libpam-git-20140514-1-any.pkg.tar.xz
+sudo pacman -U google-authenticator-libpam-git-*.pkg.tar.xz
 ```
 
 #### Configure Google Authenticator for the User ####
@@ -144,8 +144,9 @@ acceptable authentication method. Note that public-key authentication is also
 enabled, and if used, no PAM method will be used at all.
 
 ```bash
-sudo sed -i '/auth/a auth      required  pam_google_authenticator.so'
-sudo sed -i 's,\(ChallengeResponseAuthentication *\)no,\1 yes,'
+sudo sed -i '/auth/a auth      required  pam_google_authenticator.so' \
+	/etc/pam.d/system-remote-login
+sudo sed -i 's,\(ChallengeResponseAuthentication *\)no,\1 yes,' /etc/ssh/sshd_config
 sudo systemctl reload sshd
 ```
 
