@@ -40,7 +40,7 @@ Connection=ethernet
 IP=static
 Address=('192.168.1.50/24')
 Gateway='192.168.1.1'
-DNS=('192.168.1.1')
+DNS=('8.8.8.8', '8.8.4.4')
 EOF
 netctl enable eth0-static
 ln -s /dev/null /etc/udev/rules.d/80-net-setup-link.rules
@@ -52,17 +52,19 @@ For more info, see [udevd explanation about naming scheme](http://www.freedeskto
 ### Install & Configure SSH Server. ###
 
 ```bash
-pacman -S --noconfirm openssh 
+pacman -S --noconfirm openssh
+systemctl enable sshd 
 ```
 
 The default configuration is good enough. If you want more, here is a [nice article](http://www.cyberciti.biz/tips/linux-unix-bsd-openssh-server-best-practices.html).
 Additionally, one may add public key to the authorized keys in the .ssh dir of the user.
 
 ```bash
-mkdir -p /home/username/.ssh
+mkdir /home/username/.ssh
 cat << EOF >> /home/username/.ssh/authorized_keys
 ssh-rsa AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA usernamey@host
 EOF
+chown -R username /home/username/.ssh
 ```
 Replace the key and username/host with your key. For more info about how to generate a key, read the manual of ssh-keygen.
 
@@ -96,7 +98,56 @@ sudo ufw enable
 sudo systemctl enable ufw
 ```
 
+### Setting NTP and Timezone ###
+This is a good place to set up NTP.
+NTP is important for ssl certificate synchroziation and other stuff (curl to https breaks if the clock is not set properly).
+
+
+```bash
+sudo pacman -S --noconfirm ntp
+sudo systemctl enable ntpd
+sudo systemctl start ntpd
+sudo timedatectl set-timezone Asia/Jerusalem
+```
+The timezones list can be found using the command `timedatectl list-timezones`.
+
 ### Bonus: Google Two Step Authenticator ###
+Google Authenticator is a nice implmenetation for OTP. It has a nice mobile app
+which generates a password according to the current time.
+It is not really needed in a home server which is a available only from the LAN
+but it is a good excuse to learn how to work with AUR.
+
+#### Build and Install Google Authenticator ####
+
+```bash
+sudo pacman -S --noconfirm git gcc make fakeroot # requied for fetching and building
+mkdir -p ~/aur-build
+cd ~/aur-build
+curl -o google-authenticator-libpam-git.tar.gz \
+	https://aur.archlinux.org/packages/go/google-authenticator-libpam-git/google-authenticator-libpam-git.tar.gz
+tar xf ./google-authenticator-libpam-git.tar.gz
+cd google-authenticator-libpam-git
+makepkg -s # build package
+sudo pacman -U google-authenticator-libpam-git-20140514-1-any.pkg.tar.xz
+```
+
+#### Configure Google Authenticator for the User ####
+Download Google Authenticator App to your phone. Then Execute the 
+command ```google-authenticator ``` and do as requested in the dialog.
+Create new account in the application either with the QR code (link generated in the dialog)
+or with the codes generated in the dialog.
+
+#### Configure SSHD and PAM ####
+Now, we configure PAM to require Google Authenticator code in addition to the
+default authentication (unix password). Then, we configure SSHD to add PAM ass
+acceptable authentication method. Note that public-key authentication is also
+enabled, and if used, no PAM method will be used at all.
+
+```bash
+sudo sed -i '/auth/a auth      required  pam_google_authenticator.so'
+sudo sed -i 's,\(ChallengeResponseAuthentication *\)no,\1 yes,'
+sudo systemctl reload sshd
+```
 
 [base system]: base-system.html
 
