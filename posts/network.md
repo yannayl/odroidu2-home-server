@@ -50,6 +50,13 @@ ln -s /dev/null /etc/udev/rules.d/80-net-setup-link.rules
 Note: the last line disables udevd's new naming scheme for network interfaces. Currently, the ethernet driver of the odroid u2 does not implement name changes (at least I think it's the driver). And there is only one ethernet on the board anyway (unless one connets another one via the USB). So disabling it guarantees no sad accidents in the future.
 For more info, see [udevd explanation about naming scheme](http://www.freedesktop.org/wiki/Software/systemd/PredictableNetworkInterfaceNames/).
 
+### Avahi Daemon ###
+TODO 
+dhcp
+`sed -i 's,#\(disallow-other-stacks\)=.*,\1=yes'`
+
+The last line [fixes a conflict](https://forums.gentoo.org/viewtopic-p-7404160.html) between the new release of avahi and old kernels (< 3.9).
+
 ### Install & Configure SSH Server. ###
 
 ```bash
