@@ -11,7 +11,7 @@ Blog about setting up my [odroid u2][] as simple home server.
 * [users configuration](posts/users.html)
 * [network configuration](posts/network.html)
 * [extrnal storage](posts/storage.html)
-* samba and nfs shares
+* [samba and nfs shares](posts/shares.html)
 * rsync server
 * google drive synchronization
 * remote access
