@@ -4,7 +4,7 @@
     <meta charset='utf-8' />
     <meta http-equiv="X-UA-Compatible" content="chrome=1" />
 
-    <link rel="stylesheet" type="text/css" media="screen" href="/stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="{{ site.baseurl }}/stylesheets/stylesheet.css">
 
     <title>{{ page.title }}</title>
   </head>
@@ -15,7 +15,7 @@
     <div id="header_wrap" class="outer">
         <header class="inner">
 
-          <h1 id="project_title"><a href="/">{{ site.name }}</a></h1>
+          <h1 id="project_title"><a href="{{ site.baseurl }}/">{{ site.name }}</a></h1>
           <h2 id="project_tagline">{{ site.description }}</h2>
 
         </header>
