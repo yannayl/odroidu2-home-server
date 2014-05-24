@@ -3,13 +3,9 @@ layout: default
 title: Odroid U2 Home Server
 ---
 
-Odroid U2 Home Server
-====================
-
 Blog about setting up my [odroid u2][] as simple home server.
 
-Road Map
---------
+## Road Map
 
 * [base system](posts/base-system.html)
 * [users configuration](posts/users.html)
@@ -21,10 +17,8 @@ Road Map
 * torrent client
 * regular updates
 
-Platform and Technologies
--------------------------
+## Platform and Technologies
 
-About Me
---------
+## About Me
 
 [odroid u2]: <http://hardkernel.com/main/products/prdt_info.php?g_code=G135341370451>

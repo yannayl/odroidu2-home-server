@@ -1,3 +1,4 @@
-name: odroidu2 home server
+name: Odroid-U2 Home Server
+description: Building and Configuring ARM/Linux Server from Scratch
 markdown: redcarpet
 pygments: true
