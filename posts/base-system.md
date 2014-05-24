@@ -8,12 +8,12 @@ categories: archlinux
 In this post, I explain how to build a minimal Archlinux image for the odroid u2 (from scratch).
 It is based on this [odroid forum post](http://forum.odroid.com/viewtopic.php?f=52&t=3662) and some other posts from the internet (see some links in the end).
 
-Setting up environment
-======================
+### Setting up environment
+
 I am building the image on x86/mint platform, but I suppose any linux distro will do (mutatis mutandis).
 
-Working directory and environment variables
--------------------------------------------
+#### Working directory and environment variables
+
 ```bash
 mkdir alarm-base-guide
 cd alarm-base-guide
@@ -25,8 +25,8 @@ replace the X in the SDCARD variable with the appropriate letter (e.g. /dev/sdc)
 BEWARE: specifying the wrong letter may do evil things to your storage devices.
 	
 
-Install required packages
--------------------------
+#### Install required packages
+
 ```bash
 sudo apt-get install qemu binfmt-support qemu-user-static # chrooting packages
 sudo apt-get install u-boot-tools # compiling the boot script
@@ -35,8 +35,8 @@ sudo apt-get install f2fs-tools # making the falsh-friendly file-system
 ```
 If ext4 is preferred over the f2fs, install the ext4 package instead.
 
-Download sources and pre-build binraies
----------------------------------------
+#### Download sources and pre-build binraies
+
 ```bash
 wget odroid.in/guides/ubuntu-lfs/boot.tar.gz # boot image and installation script
 git clone --depth 0 https://github.com/yannayl/linux-odroid.git -b odroid-3.8.y odroid-3.8.y # kernel sources and configuration files
@@ -45,11 +45,10 @@ wget https://raw.githubusercontent.com/yannayl/arch-bootstrap/master/arch-bootst
 
 ([hardkernel's repo](https://github.com/hardkernel/linux) may be downloaded instead, but make sure to fix their kernel configuration. see Building the Kernel)
 
-Building and Installing the Image
-=================================
+### Building and Installing the Image
 
-Installing the Bootloader
--------------------------
+#### Installing the Bootloader
+
 The bootloader comes pre-built from hardkernel. In fact, the Exynos has couple of bootloaders, each boots the other. Thos bootloaders should be installed on the sdcard before the first partition. Inside the boot.tar.gz you will find those bootloaders alongwith a script to install them. The script is very simple, just few dd commands. Reading those commands enables one to compute where the first partition may start.
 
 ```bash
@@ -93,8 +92,8 @@ w
 finally, run ```sudo partprobe $SDCARD``` to see the newly created partitions.
 
 
-Make and Mount the Partitions
------------------------------
+#### Make and Mount the Partitions
+
 ```bash
 cd $GUIDE
 mkdir -p rootfs
@@ -107,8 +106,8 @@ sudo mount "${SDCARD}2" rootfs
 
 if you want an ext4 and not f2fs, don't forget to tunefs off the journal, and don't add the rootfs type in the boot cmdline.
 
-Create Boot Script
-------------------
+#### Create Boot Script
+
 ```bash
 cd $GUIDE/boot
 cat << __EOF__ | sudo tee boot.txt
@@ -121,8 +120,8 @@ __EOF__
 sudo mkimage -A arm -T script -C none -n boot -d ./boot.txt boot.scr
 ```
 
-Build the Base-System
----------------------
+#### Build the Base-System
+
 ```bash
 cd $GUIDE
 sudo ./arch-bootstrap.sh -d arch-pkg -a arm -q rootfs
@@ -133,8 +132,8 @@ Note that inside the rootfs, there is a qemu-arm-static binary for chrooting fro
 
 I altered the original script which was documented (sorta) here:[Archbootstrap in ArchLinux Wiki](https://wiki.archlinux.org/index.php/Archbootstrap)
 
-Configure/Build/Install the kernel
-----------------------------------
+#### Configure/Build/Install the kernel
+
 ```bash
 cd $GUIDE/odroid-3.8.y
 export ARCH=arm
@@ -154,15 +153,15 @@ sudo sed -i '/^#IgnorePkg/a IgnorePkg   = linux' $GUIDE/rootfs/etc/pacman.conf
 ```
 This way (hopefully) our kernel won't break
 
-Unmount and Cleanup
--------------------
+#### Unmount and Cleanup
+
 ```bash
 cd $GUIDE
 sudo umount roofts boot
 sync
 ```
 
-Finish 
-======
+### Finish 
+
 Thats it. You can put the sd card in the odroid and it will boot wit practically bare linux + pacman + systemd + bash + getty. 
 
