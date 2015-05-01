@@ -53,7 +53,7 @@ The bootloader comes pre-built from hardkernel. In fact, the Exynos has couple o
 
 ```bash
 cd $GUIDE
-tar xf boot.tar.xz
+tar xf boot.tar.gz
 cd boot
 chmod +x sd_fusing.sh
 sudo ./sd_fusing.sh $SDCARD
