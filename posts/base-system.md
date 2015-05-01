@@ -39,7 +39,7 @@ If ext4 is preferred over the f2fs, install the ext4 package instead.
 
 ```bash
 wget odroid.in/guides/ubuntu-lfs/boot.tar.gz # boot image and installation script
-git clone --depth 0 https://github.com/yannayl/linux-odroid.git -b odroid-3.8.y odroid-3.8.y # kernel sources and configuration files
+git clone --depth 1 https://github.com/yannayl/linux-odroid.git -b odroid-3.8.y odroid-3.8.y # kernel sources and configuration files
 wget https://raw.githubusercontent.com/yannayl/arch-bootstrap/master/arch-bootstrap.sh # script for building and chrooting the base system
 ```
 
