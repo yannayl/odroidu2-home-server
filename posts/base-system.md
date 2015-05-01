@@ -126,6 +126,7 @@ sudo mkimage -A arm -T script -C none -n boot -d ./boot.txt boot.scr
 
 ```bash
 cd $GUIDE
+chmod +x ./arch-bootstrap.sh
 sudo ./arch-bootstrap.sh -d arch-pkg -a arm -q rootfs
 ```
 
