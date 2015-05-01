@@ -86,7 +86,7 @@ p
 n
 p
 2
-135168
+135169
 <just press enter here>
 w
 ```
@@ -103,7 +103,7 @@ mkdir -p boot
 sudo mkfs.vfat -n boot "${SDCARD}1"
 sudo mkfs.f2fs -l rootfs "${SDCARD}2"
 sudo mount "${SDCARD}1" boot
-sudo mount "${SDCARD}2" rootfs
+sudo mount -t f2fs "${SDCARD}2" rootfs
 ```
 
 if you want an ext4 and not f2fs, don't forget to tunefs off the journal, and don't add the rootfs type in the boot cmdline.
