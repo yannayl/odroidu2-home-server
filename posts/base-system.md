@@ -73,18 +73,20 @@ Then create two partitions on the card, one for boot and one for rootfs.
 The first partition should start after at least 1240576 bytes (see Installing the Bootloader section or explanation). Practically, starting it after 1.5M should be okay, but read first if you wanna be on the safe side.
 The boot partition should be couple of megabytes, it only contains the kernel (4M~) and boot scripts (couple of Kilobytes). Maybe in the future it will have an initrd. Practically size to 64M.
 The rootfs partition may have the rest of the sd-card.
+The following numbers are under the assumption of 512 bytes sector. One may verify it is the case executing the 'p' command in fdisk.
 
 ```bash
 sudo fdisk $SDCARD
+p
 n
 p
 1
-2M
-+64M
+4096
++131072
 n
 p
 2
-66M
+135168
 <just press enter here>
 w
 ```
