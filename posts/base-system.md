@@ -162,11 +162,11 @@ This way (hopefully) our kernel won't break
 
 ```bash
 cd $GUIDE
-sudo umount roofts boot
+sudo umount rootfs boot
 sync
 ```
 
 ### Finish 
 
-Thats it. You can put the sd card in the odroid and it will boot wit practically bare linux + pacman + systemd + bash + getty. 
+Thats it. You can put the sd card in the odroid and it will boot with practically bare linux + pacman + systemd + bash + getty. 
 
