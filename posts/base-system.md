@@ -39,7 +39,7 @@ If ext4 is preferred over the f2fs, install the ext4 package instead.
 
 ```bash
 wget odroid.in/guides/ubuntu-lfs/boot.tar.gz # boot image and installation script
-git clone --depth 1 https://github.com/yannayl/linux-odroid.git -b odroid-3.8.y odroid-3.8.y # kernel sources and configuration files
+wget https://github.com/yannayl/linux-odroid/archive/odroid-3.8.y.tar.gz # kernel sources and configuration files
 wget https://raw.githubusercontent.com/yannayl/arch-bootstrap/master/arch-bootstrap.sh # script for building and chrooting the base system
 ```
 
@@ -138,7 +138,9 @@ I altered the original script which was documented (sorta) here:[Archbootstrap i
 #### Configure/Build/Install the Kernel
 
 ```bash
-cd $GUIDE/odroid-3.8.y
+cd $GUIDE
+tar xf odroid-3.8.y.tar.gz
+cd linux-odroid-odroid-3.8.y
 export ARCH=arm
 export CROSS_COMPILE=arm-linux-gnueabi-
 make odroidu_archlinux_defconfig
@@ -147,8 +149,7 @@ sudo cp arch/arm/boot/zImage $GUIDE/boot/
 sudo make ARCH=arm INSTALL_MOD_PATH=$GUIDE/rootfs modules_install
 ```
 
-Note that if you downloaded hardkernel's linux, you need to either use my defconfig or change the defconfig to support systemd, as described in [systemd's readme](http://cgit.freedesktop.org/systemd/systemd/tree/README#n44).
-If f2fs used as root filesystem, don't forget to enable it as well.
+Note that if you downloaded hardkernel's linux, and f2fs is used as root filesystem, don't forget to enable it in the defconfig.
 
 * Ignoring kernel updates
 
