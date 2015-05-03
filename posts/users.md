@@ -59,6 +59,7 @@ passwd -l root
 Warning: this is covenience configuration, which conflicts with security. I think that from physical console, one does not have to authenticate, since one can just pull out the sd-card (and nothing is encrypted). However, I could not find a good documentation for _/etc/pam.d/system-local-login_. On my current system it seems fine (only used by the *login* service), but I do not know what happens in the future.
 
 ```bash
+pacman -S --noconfirm sed
 sed -i 's,^auth,#auth,' /etc/pam.d/system-local-login
 sed -i '/^#auth/a auth      sufficient pam_permit.so' /etc/pam.d/system-local-login
 ```
