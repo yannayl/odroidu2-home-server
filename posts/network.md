@@ -5,7 +5,8 @@ date:	10/05/2014
 categories: account, authentication, pam
 ---
 
-In this post, I explain how to configure the network for static ip and run ssh server.
+In this post, I explain how to configure static ip and run ssh server.
+The first part is done in chrooted envirnment and the rest can be done over ssh.
 
 ### Chrooting into the System ###
 In the [first post][base system] we created a chrootable Archlinux filesystem on an sdcard. Now, in order to configure the system, we need to chroot into it.
@@ -53,21 +54,12 @@ For more info, see [udevd explanation about naming scheme](http://www.freedeskto
 
 ```bash
 pacman -S --noconfirm openssh
-systemctl enable sshd 
+systemctl enable sshd.socket
 ```
 
 The default configuration is good enough. If you want more, here is a [nice article](http://www.cyberciti.biz/tips/linux-unix-bsd-openssh-server-best-practices.html).
-Additionally, one may add public key to the authorized keys in the .ssh dir of the user.
 
-```bash
-mkdir /home/username/.ssh
-cat << EOF >> /home/username/.ssh/authorized_keys
-ssh-rsa AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA usernamey@host
-EOF
-chown -R username /home/username/.ssh
-```
-Replace the key and username/host with your key. For more info about how to generate a key, read the manual of ssh-keygen.
-
+I choose to have [systemd socket activation] (inted style) for sshd since it is not running very frequently. Configuring it to run always as normal daemon is fairly easy as well, run `systemctl enable sshd` instead of enabling the socket.
 
 ### Unchroot, Unmount, log into Odroid ###
 The remaining configuration should be done on the odroid itself (due to limitations of the qemu which I do not intend to circumvent).
@@ -80,7 +72,7 @@ sudo rmdir $ROOTFS
 sync
 ```
 
-Remove the SD card from you host, and put it in the odroid. Connect the odroid to the network and turn it on.
+Remove the SD card from your host, and put it in the odroid. Connect the odroid to the network and turn it on.
 Next, ssh into it:
 
 ```bash
@@ -151,4 +143,4 @@ sudo systemctl reload sshd
 ```
 
 [base system]: base-system.html
-
+[systemd socket activation] http://0pointer.de/blog/projects/socket-activated-containers.html
