@@ -19,7 +19,7 @@ _ntfs-3g_ is a package used to mount the NTFS filesystem, deprecating the
 ntfs kernel module (_ntfs-3g_ is using FUSE).
 
 ```
-sudo pacman -Sy --no-confirm ntfs-3g
+sudo pacman -Syu --noconfirm ntfs-3g
 ```
 
 ### Configure Automatic Mount of the HD
